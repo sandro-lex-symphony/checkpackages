@@ -1,6 +1,8 @@
-# Docker checkpackages
+# Container checkpackages
 
 Tool for validating packages installed in a docker image
+
+Supports Ubuntu, debian, centos and alpine
 
 ## Build 
     go build 
