@@ -2,7 +2,7 @@
 
 Tool for validating packages installed in a docker image
 
-Supports Ubuntu, debian, centos and alpine
+Supports Ubuntu, Debian, Centos and Alpine
 
 ## Build 
     go build 
