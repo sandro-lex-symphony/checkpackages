@@ -89,6 +89,9 @@ func getPolicy(path string) ([]string, []string) {
 		}
 	}
 
+	if len(blacklist) == 0 {
+		panic("Empty policy")
+	}
 	return blacklist, exceptions
 }
 

@@ -19,3 +19,12 @@ then
 else
     echo 'OK!'
 fi 
+
+# empty policy file
+docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v ${PWD}/empty:/tmp/policy.txt checkpackages bad /tmp/policy.txt
+if [ $? -ne 2 ]
+then
+    echo 'failed, empty policy file expected to return 2'
+else
+    echo 'OK!'
+fi 
