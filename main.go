@@ -24,13 +24,22 @@ const (
 )
 
 func main() {
-
+	if len(os.Args) != 3 {
+		usage()
+		os.Exit(1)
+	}
 	ret, txt := checkPackages(os.Args[1], os.Args[2])
 	if !ret {
 		fmt.Printf("Unauthorized packages found: %s\n", txt)
 		os.Exit(1)
 	}
 	os.Exit(0)
+}
+
+func usage() {
+	fmt.Printf(`Usage:
+	checkpackages IMAGE POLICY_PATH
+`)
 }
 
 func checkPackages(image, policy_path string) (bool, string) {
@@ -53,6 +62,7 @@ func compare(blacklist_pkgs, exceptions, installed_pkgs []string) (bool, string)
 				}
 
 			}
+
 		}
 	}
 	return ret, unauthorized_pkgs
@@ -70,7 +80,8 @@ func isException(installed string, exceptions []string) bool {
 func getPolicy(path string) ([]string, []string) {
 	file, err := os.Open(path)
 	if err != nil {
-		panic(err)
+		fmt.Printf("Error: could not open policy file\n%s", err)
+		os.Exit(1)
 	}
 	defer file.Close()
 
@@ -90,7 +101,8 @@ func getPolicy(path string) ([]string, []string) {
 	}
 
 	if len(blacklist) == 0 {
-		panic("Empty policy")
+		fmt.Println("Error: empty policy")
+		os.Exit(1)
 	}
 	return blacklist, exceptions
 }
@@ -139,7 +151,8 @@ func execContainerCmd(image string, cmd []string) string {
 	ctx := context.Background()
 	cli, err := client.NewClientWithOpts(client.FromEnv)
 	if err != nil {
-		panic(err)
+		fmt.Printf("%s\n", err)
+		os.Exit(1)
 	}
 	cli.NegotiateAPIVersion(ctx)
 
@@ -154,28 +167,32 @@ func execContainerCmd(image string, cmd []string) string {
 	containerName := ""
 	resp, err := cli.ContainerCreate(ctx, containerConfig, nil, nil, nil, containerName)
 	if err != nil {
-		panic(err)
+		fmt.Printf("%s\n", err)
+		os.Exit(1)
 	}
 
 	defer cli.ContainerRemove(ctx, resp.ID, types.ContainerRemoveOptions{Force: true})
 
 	err = cli.ContainerStart(ctx, resp.ID, types.ContainerStartOptions{})
 	if err != nil {
-		panic(err)
+		fmt.Printf("%s\n", err)
+		os.Exit(1)
 	}
 
 	statusCh, errCh := cli.ContainerWait(ctx, resp.ID, container.WaitConditionNotRunning)
 	select {
 	case err := <-errCh:
 		if err != nil {
-			panic(err)
+			fmt.Printf("%s\n", err)
+			os.Exit(1)
 		}
 	case <-statusCh:
 	}
 
 	out, err := cli.ContainerLogs(ctx, resp.ID, types.ContainerLogsOptions{ShowStdout: true})
 	if err != nil {
-		panic(err)
+		fmt.Printf("%s\n", err)
+		os.Exit(1)
 	}
 
 	buf := new(strings.Builder)
