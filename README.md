@@ -41,4 +41,25 @@ will fail on apache2, but not on libapache2-mod-apparmor
     cd test
     sh test_all.sh
 
+# Bundle container security checks
 
+Runs checkpackages + dockle + snyk agaisnt an image
+
+
+## Build docker image
+    cd scripts
+    sh build.sh
+
+## Run bundle container
+    docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -e SNYK_TOKEN=[TOKEN] [image:tag]
+
+    docker run --rm -e MONITOR=true -e NONBLOCKING=true PROFILE=base-images -v /var/run/docker.sock:/var/run/docker.sock -e SNYK_TOKEN=[TOKEN] [image:tag]
+
+
+## ENV VARS
+<table>
+<th><td>VAR</td><td>description</td><td>values</td><td>default</td></th>
+<tr><td>MONITOR</td><td>Execute Snyk monitor</td><td>true|false</td></td>false</td></tr>
+<tr><td>NONBLOCKING</td><td>Always set exit code to 0</td><td>true|false</td><td>false</td></tr>
+<tr><td>PROFILE</td><td>Sets the container policy profile</td><td>prod|base-image</td><td>prod</td></tr>
+</table>
