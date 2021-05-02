@@ -59,7 +59,7 @@ Runs checkpackages + dockle + snyk agaisnt an image
 ## ENV VARS
 <table>
 <tr><th>VAR</th><th>description</th><th>values</th><th>default</th></tr>
-<tr><td>MONITOR</td><td>Execute Snyk monitor</td><td>true|false</td></td>false</td></tr>
+<tr><td>MONITOR</td><td>Execute Snyk monitor</td><td>true|false</td><td>false</td></tr>
 <tr><td>NONBLOCKING</td><td>Always set exit code to 0</td><td>true|false</td><td>false</td></tr>
 <tr><td>PROFILE</td><td>Sets the container policy profile</td><td>prod|base-image</td><td>prod</td></tr>
 </table>
