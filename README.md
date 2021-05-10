@@ -51,9 +51,9 @@ Runs checkpackages + dockle + snyk agaisnt an image
     sh build.sh
 
 ## Run bundle container
-    docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -e SNYK_TOKEN=[TOKEN] [image:tag]
+    docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -e SNYK_TOKEN=[TOKEN] secbundle [image:tag]
 
-    docker run --rm -e MONITOR=true -e NONBLOCKING=true PROFILE=base-images -v /var/run/docker.sock:/var/run/docker.sock -e SNYK_TOKEN=[TOKEN] [image:tag]
+    docker run --rm -e MONITOR=true -e NONBLOCKING=true PROFILE=base-images -v /var/run/docker.sock:/var/run/docker.sock -e SNYK_TOKEN=[TOKEN] secbundle [image:tag]
 
 
 ## ENV VARS
