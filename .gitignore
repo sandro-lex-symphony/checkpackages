@@ -1,1 +1,4 @@
-checkpackages
+vendor
+bin
+go.sum
+
